@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { FieldValues } from 'react-hook-form';
+import './App.css';
 
 // Define the Zod schema for the main form
 const formSchema = z.object({
@@ -24,6 +25,7 @@ const jsonSchema = zodToJsonSchema(formSchema, { name: 'FormSchema' });
 function App() {
   const [file, setFile] = useState<File | null>(null);
   const [uploadStatus, setUploadStatus] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { register, handleSubmit, formState: { errors }, setValue } = useForm<FormInputs>({
     resolver: zodResolver(formSchema),
@@ -47,6 +49,9 @@ function App() {
       return;
     }
 
+    setIsLoading(true);
+    setUploadStatus('Processing PDF...');
+
     const formData = new FormData();
     formData.append('file', file);
     formData.append('schema', JSON.stringify(jsonSchema));
@@ -62,7 +67,7 @@ function App() {
       }
 
       const data = await response.json();
-      setUploadStatus('File uploaded successfully!');
+      setUploadStatus('File processed successfully!');
       console.log(data);
 
       // Fill the form with the received data
@@ -72,8 +77,10 @@ function App() {
         });
       }
     } catch (error) {
-      setUploadStatus('Error uploading file.');
+      setUploadStatus('Error processing file.');
       console.error('Error:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -83,8 +90,11 @@ function App() {
       <div>
         <h2>Upload PDF</h2>
         <input type="file" accept=".pdf" onChange={handleFileChange} />
-        <button onClick={handleFileUpload}>Upload</button>
+        <button onClick={handleFileUpload} disabled={isLoading}>
+          {isLoading ? 'Processing...' : 'Upload'}
+        </button>
         {uploadStatus && <p>{uploadStatus}</p>}
+        {isLoading && <div className="loader"></div>}
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
