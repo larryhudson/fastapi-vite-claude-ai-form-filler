@@ -75,6 +75,55 @@ async def upload_pdf(file: UploadFile = File(...), schema: str = Form(...)):
             <li>The extracted data is returned to the frontend to populate the form.</li>
           </ol>
           <p>
+            Here's a simplified example of the 'process_pdf' function:
+          </p>
+          <pre>
+            <code>
+{`def process_pdf(self, pdf_path, json_schema):
+    # Convert PDF to image
+    image_path = self.convert_pdf_to_image(pdf_path)
+    
+    # Read image and encode to base64
+    with open(image_path, 'rb') as image_file:
+        image_base64 = base64.b64encode(image_file.read()).decode('utf-8')
+    
+    # Send request to Claude API
+    response = self.anthropic.messages.create(
+        model="claude-3-5-sonnet-20240620",
+        max_tokens=1024,
+        tools=[{
+            "name": "extract_form_data",
+            "description": "Extract form data from an image using well-structured JSON.",
+            "input_schema": json_schema
+        }],
+        tool_choice={"type": "tool", "name": "extract_form_data"},
+        messages=[
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "type": "image",
+                        "source": {
+                            "type": "base64",
+                            "media_type": "image/png",
+                            "data": image_base64
+                        }
+                    },
+                    {
+                        "type": "text",
+                        "text": "Extract the form data from this image according to the provided schema."
+                    }
+                ]
+            }
+        ]
+    )
+    
+    # Extract and return the tool call result
+    if response.content[0].type == "tool_use":
+        return response.content[0].input`}
+            </code>
+          </pre>
+          <p>
             This approach leverages Claude's advanced image processing and natural language understanding capabilities to accurately extract structured data from the uploaded PDF.
           </p>
         </div>
