@@ -6,6 +6,8 @@ import { zodToJsonSchema } from 'zod-to-json-schema';
 import { FieldValues } from 'react-hook-form';
 import './App.css';
 
+const API_BASE_URL = 'http://localhost:8000';
+
 // Define the Zod schema for the main form
 const formSchema = z.object({
   firstName: z.string().min(1, 'First name is required'),
@@ -92,6 +94,9 @@ function App() {
         <input type="file" accept=".pdf" onChange={handleFileChange} />
         <button onClick={handleFileUpload} disabled={isLoading}>
           {isLoading ? 'Processing...' : 'Upload'}
+        </button>
+        <button onClick={() => window.open(`${API_BASE_URL}/download-example-pdf`, '_blank')}>
+          Download Example PDF
         </button>
         {uploadStatus && <p>{uploadStatus}</p>}
         {isLoading && <div className="loader"></div>}

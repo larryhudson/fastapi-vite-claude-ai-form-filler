@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 import shutil
 from services.pdf_service import PDFService
 import logging
@@ -66,6 +67,13 @@ async def upload_pdf(file: UploadFile = File(...), schema: str = Form(...)):
     except Exception as e:
         logger.error(f"Error processing PDF: {str(e)}", exc_info=True)
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/download-example-pdf")
+async def download_example_pdf():
+    example_pdf_path = "example_form.pdf"
+    if not os.path.exists(example_pdf_path):
+        raise HTTPException(status_code=404, detail="Example PDF not found")
+    return FileResponse(example_pdf_path, filename="example_form.pdf")
 
 if __name__ == "__main__":
     import uvicorn

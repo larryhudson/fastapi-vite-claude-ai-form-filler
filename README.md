@@ -8,6 +8,7 @@ This project demonstrates a simple example of how to create an AI-assisted form 
 - PDF upload functionality
 - Automatic form filling using Anthropic's Claude API
 - Utilization of Claude's tool use feature for structured JSON data extraction
+- Download example PDF feature for user reference
 
 ## How It Works
 
