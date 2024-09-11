@@ -59,7 +59,23 @@ async def upload_pdf(file: UploadFile = File(...), schema: str = Form(...)):
             </code>
           </pre>
           <p>
-            The backend converts the PDF to an image, sends it to Claude API, and returns the extracted data to populate the form.
+            The 'process_pdf' function in the PDFService class handles the PDF processing and interaction with Claude:
+          </p>
+          <ol>
+            <li>It converts the PDF to an image using the pdf2image library.</li>
+            <li>The image is then encoded to base64 format.</li>
+            <li>A request is sent to Claude API using the Anthropic SDK, including:
+              <ul>
+                <li>The base64-encoded image</li>
+                <li>A tool definition for extracting form data</li>
+                <li>The JSON schema defining the expected form structure</li>
+              </ul>
+            </li>
+            <li>Claude processes the image and extracts the form data according to the provided schema.</li>
+            <li>The extracted data is returned to the frontend to populate the form.</li>
+          </ol>
+          <p>
+            This approach leverages Claude's advanced image processing and natural language understanding capabilities to accurately extract structured data from the uploaded PDF.
           </p>
         </div>
       )}
