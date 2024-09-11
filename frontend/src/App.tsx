@@ -2,6 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { zodToJsonSchema } from 'zod-to-json-schema';
 
 // Define the Zod schema
 const formSchema = z.object({
@@ -16,8 +17,8 @@ const formSchema = z.object({
 // Infer the TypeScript type from the schema
 type FormInputs = z.infer<typeof formSchema>;
 
-// Generate JSON schema
-const jsonSchema = formSchema.jsonSchema();
+// Generate JSON schema using zod-to-json-schema
+const jsonSchema = zodToJsonSchema(formSchema, { name: 'FormSchema' });
 
 function App() {
   const { register, handleSubmit, formState: { errors } } = useForm<FormInputs>({
