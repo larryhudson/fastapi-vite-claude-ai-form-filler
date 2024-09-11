@@ -1,4 +1,4 @@
-# AI-Assisted Form Filling Web Application
+# AI-Assisted Form Filler
 
 This project is a web application that uses AI to assist users in filling out forms by extracting information from uploaded PDF documents. It consists of a FastAPI Python backend and a Vite + React frontend.
 
