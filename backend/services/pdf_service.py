@@ -5,7 +5,7 @@ from anthropic import Anthropic
 
 class PDFService:
     def __init__(self):
-        self.anthropic = Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
+        self.anthropic = Anthropic()  # It will automatically use ANTHROPIC_API_KEY from environment
 
     def convert_pdf_to_image(self, pdf_path):
         images = convert_from_path(pdf_path)

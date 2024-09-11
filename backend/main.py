@@ -1,9 +1,13 @@
+import os
+from dotenv import load_dotenv
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import shutil
-import os
 from services.pdf_service import PDFService
 import logging
+
+# Load environment variables from .env file
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '.env'))
 
 # Set up logging
 logging.basicConfig(level=logging.DEBUG)
