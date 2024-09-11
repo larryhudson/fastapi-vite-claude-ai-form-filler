@@ -24,13 +24,13 @@ This innovative approach combines the power of AI with a user-friendly interface
 ## Project Structure
 
 ## 1. Project Setup
-- [ ] Initialize a new project directory
-- [ ] Set up version control (Git)
-- [ ] Create a virtual environment for Python
+- [x] Initialize a new project directory
+- [x] Set up version control (Git)
+- [x] Create a virtual environment for Python
 
 ## 2. Backend Development (FastAPI)
-- [ ] Install FastAPI and dependencies
-- [ ] Set up basic FastAPI application structure
+- [x] Install FastAPI and dependencies
+- [x] Set up basic FastAPI application structure
 - [ ] Implement API endpoints for:
   - [ ] Receiving form data
   - [ ] Handling PDF uploads
@@ -39,13 +39,26 @@ This innovative approach combines the power of AI with a user-friendly interface
 - [ ] Integrate Anthropic SDK for AI processing
 - [ ] Implement JSON response parsing and structuring
 
+### Next Steps for Backend:
+1. Create a new endpoint for PDF upload
+2. Implement PDF to image conversion using a library like pdf2image
+3. Set up Anthropic SDK and create a function to interact with the API
+4. Develop logic to process images and extract data using Anthropic API
+5. Create a response model for structured form data
+
 ## 3. Frontend Development (Vite + React)
-- [ ] Set up Vite project with React template
+- [x] Set up Vite project with React template
 - [ ] Install necessary dependencies (react-hook-form, axios, etc.)
 - [ ] Create basic application structure
 - [ ] Implement form using react-hook-form
 - [ ] Create PDF upload component
 - [ ] Implement API calls to backend
+
+### Next Steps for Frontend:
+1. Install additional dependencies: npm install react-hook-form axios
+2. Create a basic form structure using react-hook-form
+3. Implement a file upload component for PDF documents
+4. Set up API service using axios to communicate with the backend
 
 ## 4. AI Form Filler Feature
 - [ ] Develop backend logic for PDF processing
@@ -72,14 +85,13 @@ This innovative approach combines the power of AI with a user-friendly interface
 ## Technologies and Tools
 - Backend: Python, FastAPI, Anthropic SDK
 - Frontend: JavaScript, React, Vite, react-hook-form
-- PDF Processing: (TBD - e.g., PyMuPDF, pdf2image)
+- PDF Processing: pdf2image
 - API Communication: Axios
 - Version Control: Git
 - Deployment: (TBD based on hosting choice)
 
-## Next Steps
-1. Set up the project structure
-2. Begin with backend development, focusing on PDF processing and Anthropic API integration
-3. Proceed with frontend development, implementing the form and file upload functionality
-4. Integrate the AI form filling feature
-5. Conduct thorough testing and refinement
+## Immediate Next Steps
+1. Backend: Create PDF upload endpoint and implement PDF to image conversion
+2. Frontend: Set up basic form structure and file upload component
+3. Research and integrate Anthropic SDK for AI processing
+4. Begin implementation of AI form filling feature
