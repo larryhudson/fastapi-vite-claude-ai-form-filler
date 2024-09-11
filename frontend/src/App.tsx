@@ -48,7 +48,7 @@ function App() {
 
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('schema', JSON.stringify({ FormSchema: jsonSchema }));
+    formData.append('schema', JSON.stringify(jsonSchema));
 
     try {
       const response = await fetch('http://localhost:8000/upload-pdf', {

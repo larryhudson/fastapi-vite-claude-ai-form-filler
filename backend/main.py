@@ -59,7 +59,7 @@ async def upload_pdf(file: UploadFile = File(...), schema: str = Form(...)):
         
         # Process the PDF with the schema
         logger.debug("Processing PDF with schema")
-        result = pdf_service.process_pdf(file_path, json_schema)
+        result = pdf_service.process_pdf(file_path, form_schema)
         logger.debug(f"PDF processing result: {result}")
         
         return {"filename": file.filename, "status": "File processed successfully", "result": result}
