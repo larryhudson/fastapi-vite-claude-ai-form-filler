@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { FieldValues } from 'react-hook-form';
 import './App.css';
-import hljs from 'highlight.js';
-import 'highlight.js/styles/github.css';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 const API_BASE_URL = 'http://localhost:8000';
 
@@ -14,29 +14,7 @@ const API_BASE_URL = 'http://localhost:8000';
 const HowItWorks: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => {
-    if (isOpen) {
-      document.querySelectorAll('pre code').forEach((block) => {
-        hljs.highlightElement(block as HTMLElement);
-      });
-    }
-  }, [isOpen]);
-
-  return (
-    <div className="how-it-works">
-      <button onClick={() => setIsOpen(!isOpen)}>
-        {isOpen ? 'Hide How It Works' : 'Show How It Works'}
-      </button>
-      {isOpen && (
-        <div className="how-it-works-content">
-          <h3>How This Works</h3>
-          <p>
-            This application demonstrates AI-assisted form filling using React on the frontend and FastAPI with Anthropic's Claude API on the backend.
-          </p>
-          <h4>Frontend (React + TypeScript)</h4>
-          <p>The form is defined using react-hook-form and Zod for schema validation:</p>
-          <pre>
-            <code className="language-typescript">{`
+  const frontendCode = `
 const formSchema = z.object({
   firstName: z.string().min(1, 'First name is required'),
   lastName: z.string().min(1, 'Last name is required'),
@@ -54,13 +32,10 @@ const {
 } = useForm<FormInputs>({
   resolver: zodResolver(formSchema),
 });
-`.trim()}</code>
-          </pre>
-          <h4>Backend (FastAPI + Python)</h4>
-          <p>The backend processes the uploaded PDF and uses Claude API for data extraction:</p>
-          <pre>
-            <code className="language-python">
-{`@app.post("/upload-pdf")
+  `.trim();
+
+  const backendCode = `
+@app.post("/upload-pdf")
 async def upload_pdf(file: UploadFile = File(...), schema: str = Form(...)):
     # Save the uploaded file
     file_path = f"uploads/{file.filename}"
@@ -70,31 +45,11 @@ async def upload_pdf(file: UploadFile = File(...), schema: str = Form(...)):
     # Process the PDF with the schema
     result = pdf_service.process_pdf(file_path, json.loads(schema))
     
-    return {"filename": file.filename, "status": "File processed successfully", "result": result}`}
-            </code>
-          </pre>
-          <p>
-            The 'process_pdf' function in the PDFService class handles the PDF processing and interaction with Claude:
-          </p>
-          <ol>
-            <li>It converts the PDF to an image using the pdf2image library.</li>
-            <li>The image is then encoded to base64 format.</li>
-            <li>A request is sent to Claude API using the Anthropic SDK, including:
-              <ul>
-                <li>The base64-encoded image</li>
-                <li>A tool definition for extracting form data</li>
-                <li>The JSON schema defining the expected form structure</li>
-              </ul>
-            </li>
-            <li>Claude processes the image and extracts the form data according to the provided schema.</li>
-            <li>The extracted data is returned to the frontend to populate the form.</li>
-          </ol>
-          <p>
-            Here's a simplified example of the 'process_pdf' function:
-          </p>
-          <pre>
-            <code className="language-python">
-{`def process_pdf(self, pdf_path, json_schema):
+    return {"filename": file.filename, "status": "File processed successfully", "result": result}
+  `.trim();
+
+  const processPdfCode = `
+def process_pdf(self, pdf_path, json_schema):
     # Convert PDF to image
     image_path = self.convert_pdf_to_image(pdf_path)
     
@@ -135,9 +90,52 @@ async def upload_pdf(file: UploadFile = File(...), schema: str = Form(...)):
     
     # Extract and return the tool call result
     if response.content[0].type == "tool_use":
-        return response.content[0].input`}
-            </code>
-          </pre>
+        return response.content[0].input
+  `.trim();
+
+  return (
+    <div className="how-it-works">
+      <button onClick={() => setIsOpen(!isOpen)}>
+        {isOpen ? 'Hide How It Works' : 'Show How It Works'}
+      </button>
+      {isOpen && (
+        <div className="how-it-works-content">
+          <h3>How This Works</h3>
+          <p>
+            This application demonstrates AI-assisted form filling using React on the frontend and FastAPI with Anthropic's Claude API on the backend.
+          </p>
+          <h4>Frontend (React + TypeScript)</h4>
+          <p>The form is defined using react-hook-form and Zod for schema validation:</p>
+          <SyntaxHighlighter language="typescript" style={vscDarkPlus}>
+            {frontendCode}
+          </SyntaxHighlighter>
+          <h4>Backend (FastAPI + Python)</h4>
+          <p>The backend processes the uploaded PDF and uses Claude API for data extraction:</p>
+          <SyntaxHighlighter language="python" style={vscDarkPlus}>
+            {backendCode}
+          </SyntaxHighlighter>
+          <p>
+            The 'process_pdf' function in the PDFService class handles the PDF processing and interaction with Claude:
+          </p>
+          <ol>
+            <li>It converts the PDF to an image using the pdf2image library.</li>
+            <li>The image is then encoded to base64 format.</li>
+            <li>A request is sent to Claude API using the Anthropic SDK, including:
+              <ul>
+                <li>The base64-encoded image</li>
+                <li>A tool definition for extracting form data</li>
+                <li>The JSON schema defining the expected form structure</li>
+              </ul>
+            </li>
+            <li>Claude processes the image and extracts the form data according to the provided schema.</li>
+            <li>The extracted data is returned to the frontend to populate the form.</li>
+          </ol>
+          <p>
+            Here's a simplified example of the 'process_pdf' function:
+          </p>
+          <SyntaxHighlighter language="python" style={vscDarkPlus}>
+            {processPdfCode}
+          </SyntaxHighlighter>
           <p>
             This approach leverages Claude's advanced image processing and natural language understanding capabilities to accurately extract structured data from the uploaded PDF.
           </p>
