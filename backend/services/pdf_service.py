@@ -18,7 +18,7 @@ class PDFService:
             image_base64 = base64.b64encode(image_file.read()).decode('utf-8')
 
         response = self.anthropic.messages.create(
-            model="claude-3-sonnet-20240229",
+            model="claude-3-5-sonnet-20240620",
             max_tokens=1024,
             tools=[{
                 "name": "extract_form_data",
@@ -47,9 +47,11 @@ class PDFService:
             ]
         )
 
+
         # Extract the tool call result from the response
-        tool_call = response.content[0].tool_calls[0]
-        return tool_call.input
+        if response.content[0].type == "tool_use":
+            tool_call = response.content[0]
+            return tool_call.input
 
     def process_pdf(self, pdf_path, json_schema):
         image_path = self.convert_pdf_to_image(pdf_path)
