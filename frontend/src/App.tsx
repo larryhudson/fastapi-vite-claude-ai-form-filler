@@ -1,16 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { FieldValues } from 'react-hook-form';
 import './App.css';
+import hljs from 'highlight.js';
+import 'highlight.js/styles/github.css';
 
 const API_BASE_URL = 'http://localhost:8000';
 
 // How It Works component
 const HowItWorks: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.querySelectorAll('pre code').forEach((block) => {
+        hljs.highlightElement(block as HTMLElement);
+      });
+    }
+  }, [isOpen]);
 
   return (
     <div className="how-it-works">
@@ -26,7 +36,7 @@ const HowItWorks: React.FC = () => {
           <h4>Frontend (React + TypeScript)</h4>
           <p>The form is defined using react-hook-form and Zod for schema validation:</p>
           <pre>
-            <code>
+            <code className="language-typescript">
 {`const formSchema = z.object({
   firstName: z.string().min(1, 'First name is required'),
   lastName: z.string().min(1, 'Last name is required'),
@@ -44,7 +54,7 @@ const { register, handleSubmit, formState: { errors }, setValue } = useForm<Form
           <h4>Backend (FastAPI + Python)</h4>
           <p>The backend processes the uploaded PDF and uses Claude API for data extraction:</p>
           <pre>
-            <code>
+            <code className="language-python">
 {`@app.post("/upload-pdf")
 async def upload_pdf(file: UploadFile = File(...), schema: str = Form(...)):
     # Save the uploaded file
@@ -78,7 +88,7 @@ async def upload_pdf(file: UploadFile = File(...), schema: str = Form(...)):
             Here's a simplified example of the 'process_pdf' function:
           </p>
           <pre>
-            <code>
+            <code className="language-python">
 {`def process_pdf(self, pdf_path, json_schema):
     # Convert PDF to image
     image_path = self.convert_pdf_to_image(pdf_path)

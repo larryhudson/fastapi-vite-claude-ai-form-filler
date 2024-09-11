@@ -113,13 +113,21 @@ span {
 }
 
 .how-it-works-content pre {
-  background-color: #f9f9f9;
-  padding: 10px;
-  border-radius: 4px;
+  background-color: #f6f8fa;
+  padding: 16px;
+  border-radius: 6px;
   overflow-x: auto;
+  margin-bottom: 16px;
 }
 
 .how-it-works-content code {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
   font-size: 14px;
+  line-height: 1.4;
+}
+
+/* Adjust the width of the code blocks */
+.how-it-works-content pre code {
+  width: 100%;
+  display: inline-block;
 }
