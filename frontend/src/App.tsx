@@ -3,7 +3,6 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { zodToJsonSchema } from 'zod-to-json-schema';
-import axios from 'axios';
 
 // Define the Zod schema for the main form
 const formSchema = z.object({
@@ -51,13 +50,18 @@ function App() {
     formData.append('file', file);
 
     try {
-      const response = await axios.post('http://localhost:8000/upload-pdf', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+      const response = await fetch('http://localhost:8000/upload-pdf', {
+        method: 'POST',
+        body: formData,
       });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
       setUploadStatus('File uploaded successfully!');
-      console.log(response.data);
+      console.log(data);
     } catch (error) {
       setUploadStatus('Error uploading file.');
       console.error('Error:', error);
