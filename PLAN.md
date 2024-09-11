@@ -1,5 +1,28 @@
 # Project Plan: AI-Assisted Form Filling Web Application
 
+## Project Overview
+
+This project aims to create a web application that leverages AI technology to assist users in filling out forms. The application will consist of a FastAPI Python backend and a Vite + React frontend, providing a seamless and intelligent form-filling experience.
+
+### Key Features:
+1. User-friendly web interface with a customizable form
+2. PDF document upload functionality
+3. AI-powered form filling based on uploaded PDF content
+4. Integration with Anthropic's AI API for intelligent data extraction
+
+### How it Works:
+1. Users access the web application and are presented with a form created using react-hook-form.
+2. Users can upload a PDF document containing relevant information.
+3. The backend processes the PDF, converting it to images.
+4. These images are sent to the Anthropic API, which uses advanced AI to extract structured data.
+5. The extracted data is returned as JSON, formatted to match the form fields.
+6. The frontend automatically populates the form with the extracted data.
+7. Users can review, edit, and submit the pre-filled form.
+
+This innovative approach combines the power of AI with a user-friendly interface, streamlining the often tedious process of form filling and reducing errors in data entry.
+
+## Project Structure
+
 ## 1. Project Setup
 - [ ] Initialize a new project directory
 - [ ] Set up version control (Git)
