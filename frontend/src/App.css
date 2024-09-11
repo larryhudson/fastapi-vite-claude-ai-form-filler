@@ -85,8 +85,12 @@ span {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .how-it-works {
@@ -110,24 +114,4 @@ span {
 
 .how-it-works-content h3 {
   margin-top: 0;
-}
-
-.how-it-works-content pre {
-  background-color: #f6f8fa;
-  padding: 16px;
-  border-radius: 6px;
-  overflow-x: auto;
-  margin-bottom: 16px;
-}
-
-.how-it-works-content code {
-  font-family: SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
-  font-size: 14px;
-  line-height: 1.4;
-}
-
-/* Remove styling from pre and code elements */
-.how-it-works-content pre,
-.how-it-works-content code {
-  all: revert;
 }
