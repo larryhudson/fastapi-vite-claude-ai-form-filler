@@ -8,6 +8,65 @@ import './App.css';
 
 const API_BASE_URL = 'http://localhost:8000';
 
+// How It Works component
+const HowItWorks: React.FC = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="how-it-works">
+      <button onClick={() => setIsOpen(!isOpen)}>
+        {isOpen ? 'Hide How It Works' : 'Show How It Works'}
+      </button>
+      {isOpen && (
+        <div className="how-it-works-content">
+          <h3>How This Works</h3>
+          <p>
+            This application demonstrates AI-assisted form filling using React on the frontend and FastAPI with Anthropic's Claude API on the backend.
+          </p>
+          <h4>Frontend (React + TypeScript)</h4>
+          <p>The form is defined using react-hook-form and Zod for schema validation:</p>
+          <pre>
+            <code>
+{`const formSchema = z.object({
+  firstName: z.string().min(1, 'First name is required'),
+  lastName: z.string().min(1, 'Last name is required'),
+  email: z.string().email('Invalid email address'),
+  // ... other fields
+});
+
+type FormInputs = z.infer<typeof formSchema>;
+
+const { register, handleSubmit, formState: { errors }, setValue } = useForm<FormInputs>({
+  resolver: zodResolver(formSchema),
+});`}
+            </code>
+          </pre>
+          <h4>Backend (FastAPI + Python)</h4>
+          <p>The backend processes the uploaded PDF and uses Claude API for data extraction:</p>
+          <pre>
+            <code>
+{`@app.post("/upload-pdf")
+async def upload_pdf(file: UploadFile = File(...), schema: str = Form(...)):
+    # Save the uploaded file
+    file_path = f"uploads/{file.filename}"
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+    
+    # Process the PDF with the schema
+    result = pdf_service.process_pdf(file_path, json.loads(schema))
+    
+    return {"filename": file.filename, "status": "File processed successfully", "result": result}`}
+            </code>
+          </pre>
+          <p>
+            The backend converts the PDF to an image, sends it to Claude API, and returns the extracted data to populate the form.
+          </p>
+        </div>
+      )}
+    </div>
+  );
+};
+
 // Define the Zod schema for the main form
 const formSchema = z.object({
   firstName: z.string().min(1, 'First name is required'),
@@ -89,6 +148,7 @@ function App() {
   return (
     <div className="App">
       <h1>AI-Assisted Form Filling</h1>
+      <HowItWorks />
       <div>
         <h2>Upload PDF</h2>
         <input type="file" accept=".pdf" onChange={handleFileChange} />

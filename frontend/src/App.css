@@ -88,3 +88,38 @@ span {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+.how-it-works {
+  margin-bottom: 20px;
+}
+
+.how-it-works button {
+  background-color: #2ecc71;
+  margin-bottom: 10px;
+}
+
+.how-it-works button:hover {
+  background-color: #27ae60;
+}
+
+.how-it-works-content {
+  background-color: #ecf0f1;
+  padding: 15px;
+  border-radius: 4px;
+}
+
+.how-it-works-content h3 {
+  margin-top: 0;
+}
+
+.how-it-works-content pre {
+  background-color: #f9f9f9;
+  padding: 10px;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+
+.how-it-works-content code {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 14px;
+}
