@@ -23,7 +23,13 @@ class PDFService:
             tools=[{
                 "name": "extract_form_data",
                 "description": "Extract form data from an image using well-structured JSON.",
-                "input_schema": json_schema
+                "input_schema": {
+                    "type": "object",
+                    "properties": {
+                        "FormSchema": json_schema
+                    },
+                    "required": ["FormSchema"]
+                }
             }],
             tool_choice={"type": "tool", "name": "extract_form_data"},
             messages=[
