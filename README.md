@@ -43,16 +43,46 @@ This project demonstrates a simple example of how to create an AI-assisted form 
 
 ## Getting Started
 
-1. Clone the repository
-2. Set up the backend:
-   - Install Python dependencies
-   - Configure your Anthropic API key
-3. Set up the frontend:
-   - Install npm packages
-   - Start the development server
-4. Run the application and experiment with PDF uploads and form filling
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/ai-assisted-form-filler.git
+   cd ai-assisted-form-filler
+   ```
 
-For detailed setup instructions, refer to the Setup section below.
+2. Set up the backend:
+   - Install Python dependencies:
+     ```bash
+     python -m venv venv
+     source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+     pip install -r requirements.txt
+     ```
+   - Configure your Anthropic API key:
+     ```bash
+     export ANTHROPIC_API_KEY=your_api_key_here
+     ```
+
+3. Set up the frontend:
+   - Install npm packages:
+     ```bash
+     cd frontend
+     npm install
+     ```
+   - Start the development server:
+     ```bash
+     npm start
+     ```
+
+4. Run the backend server:
+   ```bash
+   cd ../backend
+   uvicorn main:app --reload
+   ```
+
+5. Open your browser and navigate to `http://localhost:3000` to use the application.
+
+6. Experiment with PDF uploads and form filling.
+
+For more detailed setup instructions and configuration options, refer to the Setup section below.
 
 ## Setup
 
