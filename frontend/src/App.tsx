@@ -1,6 +1,5 @@
 import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import './App.css';
 
 type FormInputs = {
   firstName: string;
@@ -35,7 +34,7 @@ function App() {
         </div>
         <div>
           <label htmlFor="email">Email:</label>
-          <input {...register('email', { 
+          <input {...register('email', {
             required: 'Email is required',
             pattern: {
               value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
