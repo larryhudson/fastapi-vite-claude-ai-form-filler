@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { zodToJsonSchema } from 'zod-to-json-schema';
+import axios from 'axios';
 
-// Define the Zod schema
+// Define the Zod schema for the main form
 const formSchema = z.object({
   firstName: z.string().min(1, 'First name is required'),
   lastName: z.string().min(1, 'Last name is required'),
@@ -21,6 +22,9 @@ type FormInputs = z.infer<typeof formSchema>;
 const jsonSchema = zodToJsonSchema(formSchema, { name: 'FormSchema' });
 
 function App() {
+  const [file, setFile] = useState<File | null>(null);
+  const [uploadStatus, setUploadStatus] = useState<string>('');
+
   const { register, handleSubmit, formState: { errors } } = useForm<FormInputs>({
     resolver: zodResolver(formSchema),
   });
@@ -31,9 +35,44 @@ function App() {
     // Here you would typically send the data to your backend
   };
 
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      setFile(event.target.files[0]);
+    }
+  };
+
+  const handleFileUpload = async () => {
+    if (!file) {
+      setUploadStatus('Please select a file first.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const response = await axios.post('http://localhost:8000/upload-pdf', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      setUploadStatus('File uploaded successfully!');
+      console.log(response.data);
+    } catch (error) {
+      setUploadStatus('Error uploading file.');
+      console.error('Error:', error);
+    }
+  };
+
   return (
     <div className="App">
       <h1>AI-Assisted Form Filling</h1>
+      <div>
+        <h2>Upload PDF</h2>
+        <input type="file" accept=".pdf" onChange={handleFileChange} />
+        <button onClick={handleFileUpload}>Upload</button>
+        {uploadStatus && <p>{uploadStatus}</p>}
+      </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <label htmlFor="firstName">First Name:</label>
