@@ -36,7 +36,8 @@ const HowItWorks: React.FC = () => {
           <h4>Frontend (React + TypeScript)</h4>
           <p>The form is defined using react-hook-form and Zod for schema validation:</p>
           <pre>
-            <code className="language-typescript">{`const formSchema = z.object({
+            <code className="language-typescript">{`
+const formSchema = z.object({
   firstName: z.string().min(1, 'First name is required'),
   lastName: z.string().min(1, 'Last name is required'),
   email: z.string().email('Invalid email address'),
@@ -45,9 +46,15 @@ const HowItWorks: React.FC = () => {
 
 type FormInputs = z.infer<typeof formSchema>;
 
-const { register, handleSubmit, formState: { errors }, setValue } = useForm<FormInputs>({
+const {
+  register,
+  handleSubmit,
+  formState: { errors },
+  setValue
+} = useForm<FormInputs>({
   resolver: zodResolver(formSchema),
-});`}</code>
+});
+`.trim()}</code>
           </pre>
           <h4>Backend (FastAPI + Python)</h4>
           <p>The backend processes the uploaded PDF and uses Claude API for data extraction:</p>
