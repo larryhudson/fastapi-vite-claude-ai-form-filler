@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { zodToJsonSchema } from 'zod-to-json-schema';
+import { FieldValues } from 'react-hook-form';
 
 // Define the Zod schema for the main form
 const formSchema = z.object({
@@ -24,7 +25,7 @@ function App() {
   const [file, setFile] = useState<File | null>(null);
   const [uploadStatus, setUploadStatus] = useState<string>('');
 
-  const { register, handleSubmit, formState: { errors } } = useForm<FormInputs>({
+  const { register, handleSubmit, formState: { errors }, setValue } = useForm<FormInputs>({
     resolver: zodResolver(formSchema),
   });
 
@@ -63,6 +64,13 @@ function App() {
       const data = await response.json();
       setUploadStatus('File uploaded successfully!');
       console.log(data);
+
+      // Fill the form with the received data
+      if (data.result) {
+        Object.keys(data.result).forEach((key) => {
+          setValue(key as keyof FormInputs, data.result[key]);
+        });
+      }
     } catch (error) {
       setUploadStatus('Error uploading file.');
       console.error('Error:', error);
