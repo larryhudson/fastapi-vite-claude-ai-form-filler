@@ -127,7 +127,13 @@ span {
 }
 
 /* Adjust the width of the code blocks */
+.how-it-works-content pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
 .how-it-works-content pre code {
-  width: 100%;
-  display: inline-block;
+  display: block;
 }
