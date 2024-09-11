@@ -126,14 +126,8 @@ span {
   line-height: 1.4;
 }
 
-/* Adjust the width of the code blocks */
-.how-it-works-content pre {
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  max-width: 100%;
-  overflow-x: auto;
-}
-
-.how-it-works-content pre code {
-  display: block;
+/* Remove styling from pre and code elements */
+.how-it-works-content pre,
+.how-it-works-content code {
+  all: revert;
 }
