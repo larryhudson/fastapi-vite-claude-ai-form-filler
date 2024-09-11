@@ -12,17 +12,17 @@ class PDFService:
         images[0].save(image_path, 'PNG')
         return image_path
 
-    def process_image_with_anthropic(self, image_path):
+    def process_image_with_anthropic(self, image_path, json_schema):
         with open(image_path, 'rb') as image_file:
             response = self.anthropic.completions.create(
                 model="claude-2",
-                max_tokens_to_sample=300,
-                prompt=f"{HUMAN_PROMPT}Here's an image of a form. Please extract the relevant information and return it as a JSON object.{AI_PROMPT}",
+                max_tokens_to_sample=1000,
+                prompt=f"{HUMAN_PROMPT}Here's an image of a form. Please extract the relevant information and return it as a JSON object according to this schema: {json_schema}{AI_PROMPT}",
                 image=image_file
             )
         return response.completion
 
-    def process_pdf(self, pdf_path):
+    def process_pdf(self, pdf_path, json_schema):
         image_path = self.convert_pdf_to_image(pdf_path)
-        result = self.process_image_with_anthropic(image_path)
+        result = self.process_image_with_anthropic(image_path, json_schema)
         return result

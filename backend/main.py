@@ -21,8 +21,11 @@ pdf_service = PDFService()
 async def root():
     return {"message": "Welcome to the AI-Assisted Form Filling API"}
 
+from fastapi import Form
+import json
+
 @app.post("/upload-pdf")
-async def upload_pdf(file: UploadFile = File(...)):
+async def upload_pdf(file: UploadFile = File(...), schema: str = Form(...)):
     try:
         # Create an 'uploads' directory if it doesn't exist
         os.makedirs("uploads", exist_ok=True)
@@ -32,8 +35,11 @@ async def upload_pdf(file: UploadFile = File(...)):
         with open(file_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
         
-        # Process the PDF
-        result = pdf_service.process_pdf(file_path)
+        # Parse the JSON schema
+        json_schema = json.loads(schema)
+        
+        # Process the PDF with the schema
+        result = pdf_service.process_pdf(file_path, json_schema)
         
         return {"filename": file.filename, "status": "File processed successfully", "result": result}
     except Exception as e:
