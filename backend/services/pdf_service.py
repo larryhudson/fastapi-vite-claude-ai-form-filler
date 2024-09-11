@@ -17,19 +17,18 @@ class PDFService:
         with open(image_path, 'rb') as image_file:
             image_base64 = base64.b64encode(image_file.read()).decode('utf-8')
 
+        # Extract the FormSchema from the submitted JSON schema
+        form_schema = json_schema.get('definitions', {}).get('FormSchema', {})
+        if not form_schema:
+            raise ValueError("FormSchema not found in the provided JSON schema")
+
         response = self.anthropic.messages.create(
             model="claude-3-5-sonnet-20240620",
             max_tokens=1024,
             tools=[{
                 "name": "extract_form_data",
                 "description": "Extract form data from an image using well-structured JSON.",
-                "input_schema": {
-                    "type": "object",
-                    "properties": {
-                        "FormSchema": json_schema
-                    },
-                    "required": ["FormSchema"]
-                }
+                "input_schema": form_schema
             }],
             tool_choice={"type": "tool", "name": "extract_form_data"},
             messages=[

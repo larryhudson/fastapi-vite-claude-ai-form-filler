@@ -53,6 +53,10 @@ async def upload_pdf(file: UploadFile = File(...), schema: str = Form(...)):
         json_schema = json.loads(schema)
         logger.debug(f"Parsed JSON schema: {json_schema}")
         
+        # Extract and log the FormSchema
+        form_schema = json_schema.get('definitions', {}).get('FormSchema', {})
+        logger.debug(f"Extracted FormSchema: {form_schema}")
+        
         # Process the PDF with the schema
         logger.debug("Processing PDF with schema")
         result = pdf_service.process_pdf(file_path, json_schema)
