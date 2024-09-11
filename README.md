@@ -84,10 +84,6 @@ This project demonstrates a simple example of how to create an AI-assisted form 
 
 For more detailed setup instructions and configuration options, refer to the Setup section below.
 
-## Setup
-
-[The rest of the setup instructions remain the same as in the original README]
-
 ## Contributing
 
 Contributions to improve this example are welcome. Please feel free to submit a Pull Request or open an Issue for discussion.
