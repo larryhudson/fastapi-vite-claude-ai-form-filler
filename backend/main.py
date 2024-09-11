@@ -1,7 +1,8 @@
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import shutil
 import os
+from services.pdf_service import PDFService
 
 app = FastAPI()
 
@@ -13,6 +14,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+pdf_service = PDFService()
 
 @app.get("/")
 async def root():
@@ -29,9 +32,12 @@ async def upload_pdf(file: UploadFile = File(...)):
         with open(file_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
         
-        return {"filename": file.filename, "status": "File uploaded successfully"}
+        # Process the PDF
+        result = pdf_service.process_pdf(file_path)
+        
+        return {"filename": file.filename, "status": "File processed successfully", "result": result}
     except Exception as e:
-        return {"error": str(e)}
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
     import uvicorn
